@@ -15,13 +15,16 @@ export class AppComponent implements OnInit {
 
   myObserver = {
     next: (value: any) => console.log(value),
-    error: (err: any) => alert('Observer got an error: ' + err + '..'),
+    error: (err: any) => {
+      console.log('error');
+      console.log(err);
+    },
   };
 
   constructor(public http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get('/data.json').subscribe(this.myObserver);
+    this.http.get<any>('assets/data.json').subscribe(this.myObserver);
   }
 
   ngAfterViewInit() {
