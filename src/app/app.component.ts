@@ -13,8 +13,17 @@ export class AppComponent implements OnInit {
 
   dataArray: any = [];
 
+  list = [];
+
+  time_events = [];
+
+  temperaturareattoreR4001Values = []
+
   myObserver = {
-    next: (value: any) => console.log(value),
+    next: (value: any) => {
+      this.list = value;
+      console.log(this.list[0]);
+    },
     error: (err: any) => {
       console.log('error');
       console.log(err);
@@ -23,10 +32,27 @@ export class AppComponent implements OnInit {
 
   constructor(public http: HttpClient) {}
 
-  ngOnInit() {
-    this.http.get<any>('assets/data.json').subscribe(this.myObserver);
+  async ngOnInit() {
+    await this.http.get<any>('assets/csvjson.json').subscribe(this.myObserver);
+    await this.delay(1000);
+    await this.delay(1000);
+    this.addX()
+    this.addTemperaturareattoreR4001()
   }
 
+  addX() {
+    this.list.forEach((value) => {
+      this.time_events.push(value.timestamp);
+    });
+    console.log(this.time_events[1])
+  }
+
+  addTemperaturareattoreR4001() {
+    this.list.forEach((value) => {
+      this.temperaturareattoreR4001Values.push(value.TemperaturareattoreR4001);
+    });
+    console.log(this.temperaturareattoreR4001Values[1])
+  }
   ngAfterViewInit() {
     let data: any,
       options: any,
@@ -44,24 +70,15 @@ export class AppComponent implements OnInit {
     // }
 
     data = {
-      labels: ['Apples', 'Oranges', 'Mixed Fruit'],
+      labels: this.time_events,
       datasets: [
         {
           label: 'Apples',
-          data: [0, 50, 45, 100],
+          data: this.temperaturareattoreR4001Values,
           backgroundColor: 'rgba(40,125,200,.5)',
           borderColor: 'rgb(40,100,200)',
           fill: true,
           lineTension: 0,
-          radius: 5,
-        },
-        {
-          label: 'Oranges',
-          data: [30, 90, 111, 20],
-          backgroundColor: 'rgba(75,10,125,.5)',
-          borderColor: 'rgb(75,10,125)',
-          fill: true,
-          lineTension: 0.2,
           radius: 5,
         },
       ],
@@ -92,5 +109,9 @@ export class AppComponent implements OnInit {
       data: data,
       options: options,
     });
+  }
+
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
