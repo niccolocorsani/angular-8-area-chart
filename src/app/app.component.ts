@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 
   time_events = [];
 
-  temperaturareattoreR4001Values = []
+  temperaturareattoreR4001Values = [];
 
   myObserver = {
     next: (value: any) => {
@@ -36,22 +36,22 @@ export class AppComponent implements OnInit {
     await this.http.get<any>('assets/csvjson.json').subscribe(this.myObserver);
     await this.delay(1000);
     await this.delay(1000);
-    this.addX()
-    this.addTemperaturareattoreR4001()
+    this.addX();
+    this.addTemperaturareattoreR4001();
   }
 
   addX() {
     this.list.forEach((value) => {
       this.time_events.push(value.timestamp);
     });
-    console.log(this.time_events[1])
+    console.log(this.time_events[1]);
   }
 
   addTemperaturareattoreR4001() {
     this.list.forEach((value) => {
       this.temperaturareattoreR4001Values.push(value.TemperaturareattoreR4001);
     });
-    console.log(this.temperaturareattoreR4001Values[1])
+    console.log(this.temperaturareattoreR4001Values[1]);
   }
   ngAfterViewInit() {
     let data: any,
