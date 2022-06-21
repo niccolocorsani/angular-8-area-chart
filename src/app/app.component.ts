@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 // import * as chartData from './data.json';
@@ -12,7 +13,16 @@ export class AppComponent implements OnInit {
 
   dataArray: any = [];
 
-  ngOnInit() {}
+  myObserver = {
+    next: (value: any) => console.log(value),
+    error: (err: any) => alert('Observer got an error: ' + err + '..'),
+  };
+
+  constructor(public http: HttpClient) {}
+
+  ngOnInit() {
+    this.http.get('/data.json').subscribe(this.myObserver);
+  }
 
   ngAfterViewInit() {
     let data: any,
